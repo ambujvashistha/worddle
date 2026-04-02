@@ -1,19 +1,15 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
+import Grid from "./components/Grid";
 
 export default function App() {
-  const guesses = Array(6).fill(Array(5).fill(""));
+  const guesses = Array(6)
+    .fill(null)
+    .map(() => Array(5).fill(""));
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Wordle</Text>
-
-      {guesses.map((row, i) => (
-        <View key={i} style={styles.row}>
-          {row.map((_, j) => (
-            <View key={j} style={styles.tile} />
-          ))}
-        </View>
-      ))}
+      <Text style={styles.heading}>Wordle</Text>
+      <Grid guesses={guesses} />
     </View>
   );
 }
@@ -24,17 +20,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 28,
-    marginBottom: 20,
-  },
-  row: {
-    flexDirection: "row",
-  },
-  tile: {
-    width: 50,
-    height: 50,
-    borderWidth: 1,
-    margin: 4,
-  },
+  heading: {
+    color: "balck",
+    fontSize: "40"
+  }
 });
