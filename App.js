@@ -1,11 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, Text, StyleSheet } from "react-native";
 
 export default function App() {
+  const guesses = Array(6).fill(Array(5).fill(""));
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.title}>Wordle Lite</Text>
+
+      {guesses.map((row, i) => (
+        <View key={i} style={styles.row}>
+          {row.map((_, j) => (
+            <View key={j} style={styles.tile} />
+          ))}
+        </View>
+      ))}
     </View>
   );
 }
@@ -13,8 +21,20 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 28,
+    marginBottom: 20,
+  },
+  row: {
+    flexDirection: "row",
+  },
+  tile: {
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+    margin: 4,
   },
 });
