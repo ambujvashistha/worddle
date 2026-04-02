@@ -5,7 +5,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Wordle Lite</Text>
+      <Text style={styles.title}>Wordle</Text>
 
       {guesses.map((row, i) => (
         <View key={i} style={styles.row}>
