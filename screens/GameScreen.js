@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useState } from "react";
 import Grid from "../components/Grid";
 
@@ -13,6 +13,7 @@ export default function GameScreen({ route }) {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.heading}>Wordle</Text>
       <Grid guesses={guesses} />
     </View>
   );
@@ -24,4 +25,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  heading:{
+    fontSize:"50",
+    fontWeight:"700",
+  }
 });
