@@ -6,7 +6,7 @@ export default function GameScreen({ route }) {
   const { wordLength } = route.params;
 
   const [guesses, setGuesses] = useState(
-    Array(6)
+    Array(5)
       .fill(null)
       .map(() => Array(wordLength).fill("")),
   );
