@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   heading:{
-    fontSize:"50",
+    fontSize:50,
     fontWeight:"700",
   }
 });
