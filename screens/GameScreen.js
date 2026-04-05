@@ -7,7 +7,7 @@ import { WORDS_4, WORDS_5, WORDS_6 } from "../utils/Words";
 
 export default function GameScreen({ route }) {
   const { wordLength } = route.params;
-
+  const [freq, setFreq] =useState()
   const [guesses, setGuesses] = useState(
     Array(5)
       .fill(null)
