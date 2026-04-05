@@ -7,17 +7,22 @@ import { WORDS_4, WORDS_5, WORDS_6 } from "../utils/Words";
 
 export default function GameScreen({ route }) {
   const { wordLength } = route.params;
+
   const [guesses, setGuesses] = useState(
     Array(5)
       .fill(null)
-      .map(() => Array(wordLength).fill("")),
+      .map(() =>
+        Array(wordLength)
+          .fill(null)
+          .map(() => ({ letter: "", color: "" })),
+      ),
   );
+
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
-  
+
   const getRandomWord = () => {
     let list;
-
     if (wordLength === 4) list = WORDS_4;
     if (wordLength === 5) list = WORDS_5;
     if (wordLength === 6) list = WORDS_6;
@@ -25,13 +30,16 @@ export default function GameScreen({ route }) {
     return list[Math.floor(Math.random() * list.length)];
   };
 
-  const [targetWord, setTargetWord] = useState(getRandomWord());
+  const [targetWord] = useState(getRandomWord());
 
   const handleKeyPress = (key) => {
     if (currentCol >= wordLength) return;
 
     const newGuesses = [...guesses];
-    newGuesses[currentRow][currentCol] = key;
+    newGuesses[currentRow][currentCol] = {
+      letter: key,
+      color: "",
+    };
 
     setGuesses(newGuesses);
     setCurrentCol((prev) => prev + 1);
@@ -41,7 +49,10 @@ export default function GameScreen({ route }) {
     if (currentCol === 0) return;
 
     const newGuesses = [...guesses];
-    newGuesses[currentRow][currentCol - 1] = "";
+    newGuesses[currentRow][currentCol - 1] = {
+      letter: "",
+      color: "",
+    };
 
     setGuesses(newGuesses);
     setCurrentCol((prev) => prev - 1);
@@ -50,11 +61,24 @@ export default function GameScreen({ route }) {
   const handleEnter = () => {
     if (currentCol < wordLength) return;
 
-    const currentGuess = guesses[currentRow].join("");
+    const guess = guesses[currentRow].map((c) => c.letter);
+    const target = targetWord.split("");
 
-    console.log("Guess:", currentGuess);
-    console.log("Target:", targetWord);
-    if (currentGuess === targetWord) {
+    const newGuesses = [...guesses];
+
+    for (let i = 0; i < wordLength; i++) {
+      if (guess[i] === target[i]) {
+        newGuesses[currentRow][i].color = "green";
+      } else if (target.includes(guess[i])) {
+        newGuesses[currentRow][i].color = "yellow";
+      } else {
+        newGuesses[currentRow][i].color = "grey";
+      }
+    }
+
+    setGuesses(newGuesses);
+
+    if (guess.join("") === targetWord) {
       console.log("WIN 🎉");
     }
 
@@ -67,14 +91,20 @@ export default function GameScreen({ route }) {
       <Text style={styles.heading}>Wordle</Text>
 
       <View style={styles.gridContainer}>
-        <Grid guesses={guesses} />
+        <Grid
+          guesses={guesses}
+          currentRow={currentRow}
+          currentCol={currentCol}
+        />
       </View>
 
-      <Keyboard
-        onKeyPress={handleKeyPress}
-        onDelete={handleDelete}
-        onEnter={handleEnter}
-      />
+      <View style={styles.keyboardWrapper}>
+        <Keyboard
+          onKeyPress={handleKeyPress}
+          onDelete={handleDelete}
+          onEnter={handleEnter}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -82,20 +112,21 @@ export default function GameScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
     backgroundColor: "#fff",
   },
-
   heading: {
     fontSize: 40,
     fontWeight: "700",
     textAlign: "center",
-    marginBottom: 20,
+    marginVertical: 10,
   },
-
   gridContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  keyboardWrapper: {
+    paddingBottom: 20,
+    paddingTop: 10,
   },
 });

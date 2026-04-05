@@ -7,7 +7,7 @@ export default function Grid({ guesses }) {
       {guesses.map((row, i) => (
         <View key={i} style={styles.row}>
           {row.map((cell, j) => (
-            <Cell key={j} letter={cell} onPress={() => { console.log("pressed",i,j)}} />
+            <Cell key={j} letter={cell.letter} color={cell.color} onPress={() => { console.log("pressed",i,j)}} />
           ))}
         </View>
       ))}
