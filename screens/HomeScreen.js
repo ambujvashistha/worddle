@@ -38,5 +38,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
     width: 150,
     alignItems: "center",
+    borderRadius: 10
   },
 });

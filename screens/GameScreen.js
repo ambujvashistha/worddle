@@ -20,6 +20,7 @@ export default function GameScreen({ route }) {
 
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
+  const [gameOver, setGameOver] = useState(false)
 
   const getRandomWord = () => {
     let list;
@@ -59,6 +60,10 @@ export default function GameScreen({ route }) {
   };
 
   const handleEnter = () => {
+    console.log(currentRow, wordLength)
+    if (currentRow === 4){
+      setGameOver((prev)=>(true))
+    }
     if (currentCol < wordLength) return;
 
     const guess = guesses[currentRow].map((c) => c.letter);
@@ -84,11 +89,20 @@ export default function GameScreen({ route }) {
 
     setCurrentRow((prev) => prev + 1);
     setCurrentCol(0);
+    
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Wordle</Text>
+      {/* {gameOver ? (
+        <View>
+          <Text>Game Over</Text>
+          <Text>{targetWord}</Text>
+        </View>
+      ) : (
+        <></>
+      )} */}
 
       <View style={styles.gridContainer}>
         <Grid
