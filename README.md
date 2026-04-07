@@ -5,6 +5,22 @@ Worddle is a mobile game built with React Native and Expo. It turns a familiar w
 
 ## Screenshots
 
+<table width="100%">
+  <tr>
+    <td align="center" width="33.33%">
+      <img src="./demo/HomeScreen.jpeg" alt="Home Screen" width="90%" /><br /><br />
+      <b>Home Screen</b>
+    </td>
+    <td align="center" width="33.33%">
+      <img src="./demo/GameScreenGrid.jpeg" alt="Game Screen Grid" width="90%" /><br /><br />
+      <b>Game Board</b>
+    </td>
+    <td align="center" width="33.33%">
+      <img src="./demo/GameScreenColorCoded.jpeg" alt="Game Screen Correct Guess" width="90%" /><br /><br />
+      <b>Color Coded Evaluation</b>
+    </td>
+  </tr>
+</table>
 
 
 ## Highlights
