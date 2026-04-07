@@ -94,7 +94,7 @@ export default function GameScreen({ route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Wordle</Text>
+      <Text style={styles.heading}>Worddle</Text>
       {/* {gameOver ? (
         <View>
           <Text>Game Over</Text>
