@@ -3,37 +3,51 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import Grid from "../components/Grid";
 import Keyboard from "../components/Keyboard";
+import VictoryModal from "../components/VictoryModal";
 import { WORDS_4, WORDS_5, WORDS_6 } from "../utils/Words";
 
-export default function GameScreen({ route }) {
+const MAX_ATTEMPTS = 5;
+
+const createEmptyGuesses = (wordLength) =>
+  Array(MAX_ATTEMPTS)
+    .fill(null)
+    .map(() =>
+      Array(wordLength)
+        .fill(null)
+        .map(() => ({ letter: "", color: "" })),
+    );
+
+const getRandomWord = (wordLength) => {
+  let list = WORDS_5;
+
+  if (wordLength === 4) list = WORDS_4;
+  if (wordLength === 5) list = WORDS_5;
+  if (wordLength === 6) list = WORDS_6;
+
+  return list[Math.floor(Math.random() * list.length)];
+};
+
+export default function GameScreen({ route, navigation }) {
   const { wordLength } = route.params;
-  const [freq, setFreq] =useState()
-  const [guesses, setGuesses] = useState(
-    Array(5)
-      .fill(null)
-      .map(() =>
-        Array(wordLength)
-          .fill(null)
-          .map(() => ({ letter: "", color: "" })),
-      ),
-  );
+  const [guesses, setGuesses] = useState(createEmptyGuesses(wordLength));
 
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
-  const [gameOver, setGameOver] = useState(false)
+  const [gameOver, setGameOver] = useState(false);
+  const [hasWon, setHasWon] = useState(false);
+  const [targetWord, setTargetWord] = useState(() => getRandomWord(wordLength));
 
-  const getRandomWord = () => {
-    let list;
-    if (wordLength === 4) list = WORDS_4;
-    if (wordLength === 5) list = WORDS_5;
-    if (wordLength === 6) list = WORDS_6;
-
-    return list[Math.floor(Math.random() * list.length)];
+  const resetGame = () => {
+    setGuesses(createEmptyGuesses(wordLength));
+    setCurrentRow(0);
+    setCurrentCol(0);
+    setGameOver(false);
+    setHasWon(false);
+    setTargetWord(getRandomWord(wordLength));
   };
 
-  const [targetWord] = useState(getRandomWord());
-
   const handleKeyPress = (key) => {
+    if (gameOver || hasWon || currentRow >= MAX_ATTEMPTS) return;
     if (currentCol >= wordLength) return;
 
     const newGuesses = [...guesses];
@@ -47,6 +61,7 @@ export default function GameScreen({ route }) {
   };
 
   const handleDelete = () => {
+    if (gameOver || hasWon || currentRow >= MAX_ATTEMPTS) return;
     if (currentCol === 0) return;
 
     const newGuesses = [...guesses];
@@ -60,10 +75,7 @@ export default function GameScreen({ route }) {
   };
 
   const handleEnter = () => {
-    console.log(currentRow, wordLength)
-    if (currentRow === 4){
-      setGameOver((prev)=>(true))
-    }
+    if (gameOver || hasWon || currentRow >= MAX_ATTEMPTS) return;
     if (currentCol < wordLength) return;
 
     const guess = guesses[currentRow].map((c) => c.letter);
@@ -84,25 +96,30 @@ export default function GameScreen({ route }) {
     setGuesses(newGuesses);
 
     if (guess.join("") === targetWord) {
-      console.log("WIN 🎉");
+      setHasWon(true);
+      return;
     }
 
-    setCurrentRow((prev) => prev + 1);
+    const nextRow = currentRow + 1;
+    if (nextRow >= MAX_ATTEMPTS) {
+      setGameOver(true);
+      return;
+    }
+
+    setCurrentRow(nextRow);
     setCurrentCol(0);
-    
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Worddle</Text>
-      {/* {gameOver ? (
-        <View>
-          <Text>Game Over</Text>
-          <Text>{targetWord}</Text>
+
+      {gameOver ? (
+        <View style={styles.statusCard}>
+          <Text style={styles.statusTitle}>Game Over</Text>
+          <Text style={styles.statusSubtitle}>The word was {targetWord}</Text>
         </View>
-      ) : (
-        <></>
-      )} */}
+      ) : null}
 
       <View style={styles.gridContainer}>
         <Grid
@@ -119,6 +136,13 @@ export default function GameScreen({ route }) {
           onEnter={handleEnter}
         />
       </View>
+
+      <VictoryModal
+        visible={hasWon}
+        word={targetWord}
+        onPlayAgain={resetGame}
+        onGoHome={() => navigation.goBack()}
+      />
     </SafeAreaView>
   );
 }
@@ -142,5 +166,26 @@ const styles = StyleSheet.create({
   keyboardWrapper: {
     paddingBottom: 20,
     paddingTop: 10,
+  },
+  statusCard: {
+    alignSelf: "center",
+    marginTop: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 12,
+    backgroundColor: "#f3f4f6",
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    alignItems: "center",
+  },
+  statusTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111",
+  },
+  statusSubtitle: {
+    marginTop: 2,
+    fontSize: 14,
+    color: "#666",
   },
 });
