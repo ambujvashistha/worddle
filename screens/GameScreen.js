@@ -4,6 +4,7 @@ import { useState } from "react";
 import Grid from "../components/Grid";
 import Keyboard from "../components/Keyboard";
 import VictoryModal from "../components/VictoryModal";
+import GameOverModal from "../components/GameOverModal";
 import { WORDS_4, WORDS_5, WORDS_6 } from "../utils/Words";
 
 const MAX_ATTEMPTS = 5;
@@ -114,12 +115,12 @@ export default function GameScreen({ route, navigation }) {
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Worddle</Text>
 
-      {gameOver ? (
+      {/* {gameOver ? (
         <View style={styles.statusCard}>
           <Text style={styles.statusTitle}>Game Over</Text>
           <Text style={styles.statusSubtitle}>The word was {targetWord}</Text>
         </View>
-      ) : null}
+      ) : null} */}
 
       <View style={styles.gridContainer}>
         <Grid
@@ -136,6 +137,13 @@ export default function GameScreen({ route, navigation }) {
           onEnter={handleEnter}
         />
       </View>
+
+      <GameOverModal
+        visible={gameOver}
+        word={targetWord}
+        onPlayAgain={resetGame}
+        onGoHome={() => navigation.goBack()}
+      />
 
       <VictoryModal
         visible={hasWon}
