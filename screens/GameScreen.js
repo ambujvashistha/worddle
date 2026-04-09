@@ -76,6 +76,7 @@ export default function GameScreen({ route, navigation }) {
   };
 
   const handleEnter = () => {
+    console.log(targetWord);
     if (gameOver || hasWon || currentRow >= MAX_ATTEMPTS) return;
     if (currentCol < wordLength) return;
 

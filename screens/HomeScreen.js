@@ -7,7 +7,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose Word Length</Text>
+      <Text style={styles.title}>SELECT GAME TYPE</Text>
 
       {[4, 5, 6].map((len) => (
         <TouchableOpacity
@@ -15,7 +15,7 @@ export default function HomeScreen({ navigation }) {
           style={styles.button}
           onPress={() => startGame(len)}
         >
-          <Text>{len} Letters</Text>
+          <Text>{len} LETTERS</Text>
         </TouchableOpacity>
       ))}
     </View>
