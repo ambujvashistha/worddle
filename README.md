@@ -2,6 +2,44 @@
 
 Worddle is a mobile game built with React Native and Expo. It turns a familiar word puzzle into a clean mobile experience with dynamic board generation, a custom on-screen keyboard, and instant color-coded feedback for every guess.
 
+# Demo Walkthrough
+
+<table width="100%">
+  <tr height="120">
+    <td width="30%" valign="top">
+      <h2>Multiple puzzle modes</h2><br />
+      Supports 4-letter, 5-letter, and 6-letter gameplay for a more flexible challenge.
+    </td>
+    <td width="40%" align="center" valign="top" rowspan="3">
+      <img src="./demo/wordleDemo.gif" alt="Worddle Demo Walkthrough" width="260" /><br /><br />
+      <h2>Worddle Demo Walkthrough</h2>
+    </td>
+    <td width="30%" valign="top">
+      <h2>Custom keyboard controls</h2><br />
+      Built with enter and delete actions for intuitive gameplay on mobile.
+    </td>
+  </tr>
+  <tr height="120">
+    <td valign="top">
+      <h2>Responsive interface</h2><br />
+      Designed for smooth mobile interaction with a clean and focused layout.
+    </td>
+    <td valign="top">
+      <h2>Instant visual feedback</h2><br />
+      Each guess is evaluated with color-coded tiles to guide the player.
+    </td>
+  </tr>
+  <tr height="120">
+    <td valign="top">
+      <h2>Dynamic game board</h2><br />
+      The grid adapts to the selected word length and updates in real time.
+    </td>
+    <td valign="top">
+      <h2>Complete gameplay flow</h2><br />
+      Includes both victory and loss states for a more polished user experience.
+    </td>
+  </tr>
+</table>
 
 ## Screenshots
 
