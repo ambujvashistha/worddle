@@ -84,15 +84,28 @@ export default function GameScreen({ route, navigation }) {
     const target = targetWord.split("");
 
     const newGuesses = [...guesses];
+    const colors = Array(wordLength).fill("grey");
+    const tempTarget = [...target];
 
     for (let i = 0; i < wordLength; i++) {
-      if (guess[i] === target[i]) {
-        newGuesses[currentRow][i].color = "green";
-      } else if (target.includes(guess[i])) {
-        newGuesses[currentRow][i].color = "yellow";
-      } else {
-        newGuesses[currentRow][i].color = "grey";
+      if (guess[i] === tempTarget[i]) {
+        colors[i] = "green";
+        tempTarget[i] = null;
       }
+    }
+
+    for (let i = 0; i < wordLength; i++) {
+      if (colors[i] === "green") continue;
+
+      const idx = tempTarget.indexOf(guess[i]);
+      if (idx !== -1) {
+        colors[i] = "yellow";
+        tempTarget[idx] = null;
+      }
+    }
+
+    for (let i = 0; i < wordLength; i++) {
+      newGuesses[currentRow][i].color = colors[i];
     }
 
     setGuesses(newGuesses);
