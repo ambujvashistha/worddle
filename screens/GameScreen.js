@@ -29,14 +29,17 @@ const getRandomWord = (wordLength) => {
 };
 
 export default function GameScreen({ route, navigation }) {
-  const { wordLength } = route.params;
+  const wordFromLink = route.params?.word;
+  const wordLength = wordFromLink?.length || route.params?.wordLength;
   const [guesses, setGuesses] = useState(createEmptyGuesses(wordLength));
 
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [hasWon, setHasWon] = useState(false);
-  const [targetWord, setTargetWord] = useState(() => getRandomWord(wordLength));
+  const [targetWord, setTargetWord] = useState(
+    wordFromLink || getRandomWord(wordLength),
+  );
 
   const resetGame = () => {
     setGuesses(createEmptyGuesses(wordLength));
