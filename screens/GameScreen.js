@@ -41,13 +41,20 @@ export default function GameScreen({ route, navigation }) {
     wordFromLink || getRandomWord(wordLength),
   );
 
+  const [displayWord, setDisplayWord] = useState(targetWord);
+
   const resetGame = () => {
+    setGameOver(false);
+    setHasWon(false);
     setGuesses(createEmptyGuesses(wordLength));
     setCurrentRow(0);
     setCurrentCol(0);
-    setGameOver(false);
-    setHasWon(false);
-    setTargetWord(getRandomWord(wordLength));
+
+    if (!wordFromLink) {
+      requestAnimationFrame(() => {
+        setTargetWord(getRandomWord(wordLength));
+      });
+    }
   };
 
   const handleKeyPress = (key) => {
@@ -114,12 +121,14 @@ export default function GameScreen({ route, navigation }) {
     setGuesses(newGuesses);
 
     if (guess.join("") === targetWord) {
+      setDisplayWord(targetWord);
       setHasWon(true);
       return;
     }
 
     const nextRow = currentRow + 1;
     if (nextRow >= MAX_ATTEMPTS) {
+      setDisplayWord(targetWord);
       setGameOver(true);
       return;
     }
@@ -131,13 +140,6 @@ export default function GameScreen({ route, navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Worddle</Text>
-
-      {/* {gameOver ? (
-        <View style={styles.statusCard}>
-          <Text style={styles.statusTitle}>Game Over</Text>
-          <Text style={styles.statusSubtitle}>The word was {targetWord}</Text>
-        </View>
-      ) : null} */}
 
       <View style={styles.gridContainer}>
         <Grid
@@ -157,14 +159,14 @@ export default function GameScreen({ route, navigation }) {
 
       <GameOverModal
         visible={gameOver}
-        word={targetWord}
+        word={displayWord}
         onPlayAgain={resetGame}
         onGoHome={() => navigation.goBack()}
       />
 
       <VictoryModal
         visible={hasWon}
-        word={targetWord}
+        word={displayWord}
         onPlayAgain={resetGame}
         onGoHome={() => navigation.goBack()}
       />
@@ -191,26 +193,5 @@ const styles = StyleSheet.create({
   keyboardWrapper: {
     paddingBottom: 20,
     paddingTop: 10,
-  },
-  statusCard: {
-    alignSelf: "center",
-    marginTop: 6,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 12,
-    backgroundColor: "#f3f4f6",
-    borderWidth: 1,
-    borderColor: "#e5e7eb",
-    alignItems: "center",
-  },
-  statusTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#111",
-  },
-  statusSubtitle: {
-    marginTop: 2,
-    fontSize: 14,
-    color: "#666",
   },
 });

@@ -23,7 +23,12 @@ export default function VictoryModal({
           </View>
 
           <View style={styles.actions}>
-            <TouchableOpacity style={styles.primaryButton} onPress={onPlayAgain}>
+            <TouchableOpacity
+              style={styles.primaryButton}
+              onPress={() => {
+                requestAnimationFrame(onPlayAgain);
+              }}
+            >
               <Text style={styles.primaryButtonText}>Play Again</Text>
             </TouchableOpacity>
 
