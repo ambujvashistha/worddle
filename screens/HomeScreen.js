@@ -1,6 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useState } from "react";
+import CustomWordModal from "../components/CustomWordModal";
 
 export default function HomeScreen({ navigation }) {
+  const [showModal, setShowModal] = useState(false);
+
   const startGame = (length) => {
     navigation.navigate("Game", { wordLength: length });
   };
@@ -18,6 +22,21 @@ export default function HomeScreen({ navigation }) {
           <Text>{len} LETTERS</Text>
         </TouchableOpacity>
       ))}
+
+
+      <TouchableOpacity
+        style={styles.customButton}
+        onPress={() => setShowModal(true)}
+      >
+        <Text style={{color:"white"}}>CUSTOM WORD</Text>
+      </TouchableOpacity>
+
+   
+      <CustomWordModal
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+        navigation={navigation}
+      />
     </View>
   );
 }
@@ -38,6 +57,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
     width: 150,
     alignItems: "center",
-    borderRadius: 10
+    borderRadius: 10,
+  },
+  customButton: {
+    padding: 12,
+    margin: 8,
+    backgroundColor: "#000000",
+    color: "#ddd",
+    width: 150,
+    alignItems: "center",
+    borderRadius: 10,
   },
 });
