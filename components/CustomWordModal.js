@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Share,
 } from "react-native";
 import { useState } from "react";
 import * as Clipboard from "expo-clipboard";
@@ -28,6 +29,16 @@ export default function CustomWordModal({ visible, onClose, navigation }) {
     const link = `mywordle://play?word=${upperWord}`;
     setGeneratedLink(link);
     await Clipboard.setStringAsync(link);
+  };
+
+  const handleShare = async () => {
+    if (!generatedLink) return;
+
+    try {
+      await Share.share({
+        message: `Play my custom Worddle: ${generatedLink}`,
+      });
+    } catch (err) {}
   };
 
   return (
@@ -61,6 +72,9 @@ export default function CustomWordModal({ visible, onClose, navigation }) {
                 onPress={() => Clipboard.setStringAsync(generatedLink)}
               >
                 <Text>COPY LINK</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={handleShare}>
+                <Text>SHARE</Text>
               </TouchableOpacity>
             </View>
           ) : null}
