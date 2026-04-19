@@ -11,6 +11,7 @@ import * as Clipboard from "expo-clipboard";
 
 export default function CustomWordModal({ visible, onClose, navigation }) {
   const [word, setWord] = useState("");
+  const [generatedLink, setGeneratedLink] = useState("");
 
   const upperWord = word.toUpperCase();
 
@@ -25,6 +26,7 @@ export default function CustomWordModal({ visible, onClose, navigation }) {
   const handleLink = async () => {
     if (!upperWord) return;
     const link = `mywordle://play?word=${upperWord}`;
+    setGeneratedLink(link);
     await Clipboard.setStringAsync(link);
   };
 
@@ -48,6 +50,20 @@ export default function CustomWordModal({ visible, onClose, navigation }) {
           <TouchableOpacity style={styles.button} onPress={handleLink}>
             <Text>GENERATE LINK</Text>
           </TouchableOpacity>
+
+          {generatedLink ? (
+            <View style={{ marginTop: 10, alignItems: "center" }}>
+              <Text style={{ fontSize: 12, marginBottom: 5 }}>
+                {generatedLink}
+              </Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => Clipboard.setStringAsync(generatedLink)}
+              >
+                <Text>COPY LINK</Text>
+              </TouchableOpacity>
+            </View>
+          ) : null}
 
           <TouchableOpacity style={styles.close} onPress={onClose}>
             <Text>CLOSE</Text>
