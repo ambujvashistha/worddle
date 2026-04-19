@@ -16,7 +16,7 @@ const ROWS = [
   ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "⌫"],
 ];
 
-export default function Keyboard({ onKeyPress, onDelete, onEnter }) {
+export default function Keyboard({ onKeyPress, onDelete, onEnter, keyColors }) {
   const handlePress = (key) => {
     if (key === "ENTER") {
       onEnter();
@@ -25,6 +25,27 @@ export default function Keyboard({ onKeyPress, onDelete, onEnter }) {
     } else {
       onKeyPress(key);
     }
+  };
+
+  const getKeyStyle = (key) => {
+    if (key === "ENTER" || key === "⌫") return styles.specialKey;
+
+    const color = keyColors?.[key];
+
+    if (color === "green") return { backgroundColor: "#6aaa64" };
+    if (color === "yellow") return { backgroundColor: "#c9b458" };
+    if (color === "grey") return { backgroundColor: "#787c7e" };
+
+    return {};
+  };
+
+  const getTextStyle = (key) => {
+    if (key === "ENTER" || key === "⌫") return styles.specialKeyText;
+
+    const color = keyColors?.[key];
+    if (color) return { color: "#fff" };
+
+    return {};
   };
 
   return (
@@ -39,6 +60,7 @@ export default function Keyboard({ onKeyPress, onDelete, onEnter }) {
                 style={[
                   styles.key,
                   isSpecialKey && styles.specialKey,
+                  getKeyStyle(key),
                   key === "ENTER" && { width: KEY_WIDTH * 1.5 },
                   key === "⌫" && { width: KEY_WIDTH * 1.5 },
                 ]}
@@ -49,6 +71,7 @@ export default function Keyboard({ onKeyPress, onDelete, onEnter }) {
                   style={[
                     styles.keyText,
                     isSpecialKey && styles.specialKeyText,
+                    getTextStyle(key),
                   ]}
                 >
                   {key}

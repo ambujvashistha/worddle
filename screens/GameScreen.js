@@ -36,6 +36,7 @@ export default function GameScreen({ route, navigation }) {
   const [currentRow, setCurrentRow] = useState(0);
   const [currentCol, setCurrentCol] = useState(0);
   const [gameOver, setGameOver] = useState(false);
+  const [keyColors, setKeyColors] = useState({});
   const [hasWon, setHasWon] = useState(false);
   const [targetWord, setTargetWord] = useState(
     wordFromLink || getRandomWord(wordLength),
@@ -46,6 +47,7 @@ export default function GameScreen({ route, navigation }) {
   const resetGame = () => {
     setGameOver(false);
     setHasWon(false);
+    setKeyColors({});
     setGuesses(createEmptyGuesses(wordLength));
     setCurrentRow(0);
     setCurrentCol(0);
@@ -120,6 +122,29 @@ export default function GameScreen({ route, navigation }) {
 
     setGuesses(newGuesses);
 
+    const updated = { ...keyColors };
+
+    for (let i = 0; i < wordLength; i++) {
+      const letter = guess[i];
+      const color = colors[i];
+
+      if (updated[letter] === "green") continue;
+
+      if (color === "green") {
+        updated[letter] = "green";
+      } else if (color === "yellow") {
+        if (updated[letter] !== "green") {
+          updated[letter] = "yellow";
+        }
+      } else {
+        if (!updated[letter]) {
+          updated[letter] = "grey";
+        }
+      }
+    }
+
+    setKeyColors(updated);
+
     if (guess.join("") === targetWord) {
       setDisplayWord(targetWord);
       setHasWon(true);
@@ -154,6 +179,7 @@ export default function GameScreen({ route, navigation }) {
           onKeyPress={handleKeyPress}
           onDelete={handleDelete}
           onEnter={handleEnter}
+          keyColors={keyColors}
         />
       </View>
 
