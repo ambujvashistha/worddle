@@ -21,8 +21,8 @@ Worddle is a mobile game built with React Native and Expo. It turns a familiar w
   </tr>
   <tr height="120">
     <td valign="top">
-      <h2>Responsive interface</h2><br />
-      Designed for smooth mobile interaction with a clean and focused layout.
+      <h2>Deep linking challenges</h2><br />
+      Users can generate and share custom word links that open directly inside the game.
     </td>
     <td valign="top">
       <h2>Instant visual feedback</h2><br />
@@ -59,7 +59,6 @@ Worddle is a mobile game built with React Native and Expo. It turns a familiar w
     </td>
   </tr>
 </table>
-
 
 ## Highlights
 
@@ -110,14 +109,3 @@ worddle/
 │   └── Words.js
 ├── assets/
 └── package.json
-```
-
-## Getting Started
-
-```bash
-npm install
-npm start
-```
-
-
-
